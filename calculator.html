@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Calculator Web Application</title>
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #414040;
+      font-family: Arial, sans-serif;
+    }
+
+    .calculator {
+      background: #2196f3;
+      padding: 20px;
+      border-radius: 15px;
+      width: 280px;
+    }
+
+    .display {
+      width: 100%;
+      height: 60px;
+      font-size: 28px;
+      text-align: right;
+      padding: 10px;
+      border: none;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    button {
+      height: 55px;
+      font-size: 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background: #1976d2;
+      color: white;
+    }
+
+    button:hover {
+      background: #0d47a1;
+    }
+
+    .operator {
+      background: #1565c0;
+    }
+
+    .equal {
+      background: #2e7d32;
+    }
+
+    .clear {
+      background: #d32f2f;
+      grid-column: span 4;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="calculator">
+    <input type="text" id="display" class="display" value="0" disabled>
+
+    <div class="buttons">
+      <button onclick="inputValue('7')">7</button>
+      <button onclick="inputValue('8')">8</button>
+      <button onclick="inputValue('9')">9</button>
+      <button class="operator" onclick="inputValue('+')">+</button>
+
+      <button onclick="inputValue('4')">4</button>
+      <button onclick="inputValue('5')">5</button>
+      <button onclick="inputValue('6')">6</button>
+      <button class="operator" onclick="inputValue('-')">-</button>
+
+      <button onclick="inputValue('1')">1</button>
+      <button onclick="inputValue('2')">2</button>
+      <button onclick="inputValue('3')">3</button>
+      <button class="operator" onclick="inputValue('*')">×</button>
+
+      <button onclick="inputValue('0')">0</button>
+      <button onclick="inputValue('.')">.</button>
+      <button class="equal" onclick="calculateResult()">=</button>
+      <button class="operator" onclick="inputValue('/')">÷</button>
+
+      <button class="clear" onclick="clearDisplay()">Clear</button>
+    </div>
+  </div>
+
+  <script>
+    const display = document.getElementById("display");
+
+    function inputValue(value) {
+      if (display.value === "0" || display.value === "Error") {
+        display.value = value;
+      } else {
+        display.value += value;
+      }
+    }
+
+    function clearDisplay() {
+      display.value = "0";
+    }
+
+    function calculateResult() {
+      try {
+        let result = eval(display.value);
+        if (result === Infinity) {
+          display.value = "Error";
+        } else {
+          display.value = result;
+        }
+      } catch {
+        display.value = "Error";
+      }
+    }
+
+    // Keyboard input handling
+    document.addEventListener("keydown", function (event) {
+      let key = event.key;
+
+      if (!isNaN(key) || "+-*/.".includes(key)) {
+        inputValue(key);
+      }
+
+      if (key === "Enter") {
+        calculateResult();
+      }
+
+      if (key === "Backspace") {
+        display.value = display.value.slice(0, -1) || "0";
+      }
+
+      if (key === "Escape") {
+        clearDisplay();
+      }
+    });
+  </script>
+
+</body>
+</html>
